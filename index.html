@@ -3,99 +3,137 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>iPhone Store</title>
+  <title>Enhanced E-Commerce Website</title>
   <style>
-    /* Basic Reset */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
+    :root {
+      --primary-bg-color: white;
+      --primary-text-color: black;
+      --secondary-bg-color: #333;
+      --primary-btn-bg-color: red;
+      --primary-btn-hover-bg-color: #cc0000;
+      --switch-bg-color: #333;
+    }
+
+    [data-theme="dark"] {
+      --primary-bg-color: #1e1e1e;
+      --primary-text-color: white;
+      --secondary-bg-color: #555;
+      --primary-btn-bg-color: #e60000;
+      --primary-btn-hover-bg-color: #cc0000;
+      --switch-bg-color: #555;
     }
 
     body {
-      font-family: Arial, sans-serif;
-      background-color: #f5f5f5;
-      padding: 20px;
+      font-family: 'Arial', sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: var(--primary-bg-color);
+      color: var(--primary-text-color);
+      transition: background-color 0.3s ease, color 0.3s ease;
     }
 
-    /* Navigation Bar */
+    header {
+      background-color: var(--secondary-bg-color);
+      color: white;
+      padding: 10px;
+      text-align: center;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
     nav {
       display: flex;
       justify-content: center;
-      background-color: #333;
+      flex-wrap: wrap;
     }
 
-    nav ul {
-      display: flex;
-      list-style: none;
-      margin: 0;
-      padding: 0;
-    }
-
-    nav ul li {
-      margin: 0 15px;
-    }
-
-    nav ul li a {
+    header a {
       color: white;
       text-decoration: none;
-      padding: 15px 20px;
-      display: block;
+      margin: 0 10px;
+      font-weight: bold;
       position: relative;
+      padding: 5px 0;
     }
 
-    /* Hover and Active State */
-    nav ul li a:hover, nav ul li a.active {
-      background-color: #555;
+    /* Hover effect */
+    header a:hover {
+      color: #f0f0f0;
     }
 
-    nav ul li a.active::after {
+    /* Active link with underline */
+    header a.active::after {
       content: '';
       position: absolute;
       left: 0;
-      bottom: 0;
-      width: 100%;
+      right: 0;
+      bottom: -5px;
       height: 2px;
+      background-color: white;
+      width: 100%; /* Full width of the link */
+    }
+
+    /* Initial state for the underline */
+    header a::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: -5px;
+      height: 2px;
+      background-color: transparent;
+      width: 0;
+      transition: width 0.3s ease;
+    }
+
+    /* On hover, show the underline */
+    header a:hover::after {
+      width: 100%;
       background-color: white;
     }
 
-    /* Responsive Navigation */
-    @media (max-width: 768px) {
-      nav ul li a {
-        padding: 10px;
-      }
-    }
-
-    /* Main Content */
-    .page {
-      display: none;
-      padding: 20px;
-      background-color: #fff;
-      border-radius: 8px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-      margin-top: 20px;
-    }
-
-    .page.active {
-      display: block;
-    }
-
-    /* Home Page */
-    .home h1 {
+    h1, h2 {
       text-align: center;
-      margin-bottom: 20px;
+      margin: 10px 0;
     }
 
-    /* Products Page */
-    .products .product {
-      display: flex;
-      justify-content: space-between;
-      margin-bottom: 20px;
+    section {
+      margin: 20px auto;
+      padding: 20px;
+      width: 80%;
+      max-width: 800px;
+      background-color: var(--primary-bg-color);
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     }
 
-    .products .product-icon {
-      font-size: 50px;
-      animation: bounce 1s infinite;
+    .product {
+      border: 1px solid #ccc;
+      padding: 15px;
+      margin-bottom: 15px;
+      text-align: center;
+      background-color: var(--secondary-bg-color);
+      color: white;
+      border-radius: 10px;
+      position: relative;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .product:hover {
+      transform: scale(1.02);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    .product-img {
+      width: 100px;
+      height: 180px;
+      border: 3px solid #ccc;
+      border-radius: 10px;
+      margin: 0 auto;
+      position: relative;
+      overflow: hidden;
+      animation: bounce 2s infinite ease-in-out;
     }
 
     @keyframes bounce {
@@ -107,138 +145,281 @@
       }
     }
 
-    .products button {
-      background-color: #007bff;
+    .product-screen {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      right: 12px;
+      bottom: 12px;
+      background: white;
+      border-radius: 6px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .product-name {
+      font-size: 16px;
+      margin: 10px 0;
+      text-decoration: underline;
+    }
+
+    button {
+      background-color: var(--primary-btn-bg-color);
       color: white;
       padding: 10px 20px;
       border: none;
       border-radius: 5px;
       cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.2s;
     }
 
-    /* Cart Page */
-    .cart .cart-item {
+    button:hover {
+      background-color: var(--primary-btn-hover-bg-color);
+      transform: scale(1.05);
+    }
+
+    .switch {
+      position: absolute;
+      top: 15px;
+      right: 70px;
       display: flex;
-      justify-content: space-between;
-      margin-bottom: 20px;
-    }
-
-    .cart button {
-      background-color: red;
-      color: white;
-      padding: 10px 20px;
-      border: none;
-      border-radius: 5px;
+      align-items: center;
+      background-color: var(--switch-bg-color);
+      border-radius: 15px;
+      padding: 5px;
       cursor: pointer;
+      transition: background-color 0.3s ease;
+      height: 30px;
     }
 
-    /* Footer */
-    footer {
-      text-align: center;
-      margin-top: 40px;
-      color: #777;
+    .switch-circle {
+      width: 30px;
+      height: 30px;
+      background-color: white;
+      border-radius: 50%;
+      position: relative;
+      transition: left 0.3s ease;
+    }
+
+    [data-theme="dark"] .switch-circle {
+      left: 30px;
+    }
+
+    /* Responsive design for mobile */
+    @media (max-width: 768px) {
+      header a {
+        margin: 0 5px;
+        font-size: 14px;
+      }
+
+      section {
+        width: 90%;
+        padding: 15px;
+      }
+    }
+
+    /* Larger screens adjustments */
+    @media (min-width: 1200px) {
+      section {
+        max-width: 1000px;
+      }
     }
   </style>
 </head>
 <body>
-  <!-- Navigation Bar -->
-  <nav>
-    <ul>
-      <li><a href="#home" class="active" onclick="showPage('home')">Home</a></li>
-      <li><a href="#products" onclick="showPage('products')">Products</a></li>
-      <li><a href="#product-desc" onclick="showPage('product-desc')">Product Description</a></li>
-      <li><a href="#cart" onclick="showPage('cart')">Cart</a></li>
-      <li><a href="#contact" onclick="showPage('contact')">Contact</a></li>
-    </ul>
-  </nav>
 
-  <!-- Pages -->
-  <div id="home" class="page active home">
-    <h1>Welcome to the iPhone Store!</h1>
-    <p>Find the best iPhones at unbeatable prices!</p>
-  </div>
+  <header>
+    <h1>Enhanced E-Commerce Store</h1>
+    <nav>
+      <a href="#" class="nav-link active" onclick="showSection('home', this)">Home</a>
+      <a href="#" class="nav-link" onclick="showSection('cart', this)">Cart</a>
+      <a href="#" class="nav-link" onclick="showSection('profile', this)">Profile</a>
+    </nav>
 
-  <div id="products" class="page products">
-    <h2>Our Products</h2>
-    <div class="product">
-      <div>
-        <span class="product-icon">📱</span> <span>iPhone 13 Pro Max</span>
-      </div>
-      <button onclick="addToCart('iPhone 13 Pro Max')">Add to Cart</button>
+    <!-- Theme Switch -->
+    <div class="switch" onclick="toggleTheme()">
+      <div class="switch-circle"></div>
     </div>
-    <div class="product">
-      <div>
-        <span class="product-icon">📱</span> <span>iPhone 12 Mini</span>
+  </header>
+
+  <!-- Home Page -->
+  <section id="home">
+    <h2>Products</h2>
+    <div class="product" data-id="1">
+      <div class="product-img">
+        <div class="product-screen"></div>
       </div>
-      <button onclick="addToCart('iPhone 12 Mini')">Add to Cart</button>
+      <h3 class="product-name"><a href="#" onclick="showProductDetails(1)">Product 1 - Smartphone</a></h3>
+      <p>$499</p>
     </div>
-  </div>
+    <div class="product" data-id="2">
+      <div class="product-img">
+        <div class="product-screen"></div>
+      </div>
+      <h3 class="product-name"><a href="#" onclick="showProductDetails(2)">Product 2 - Smartphone</a></h3>
+      <p>$599</p>
+    </div>
+    <div class="product" data-id="3">
+      <div class="product-img">
+        <div class="product-screen"></div>
+      </div>
+      <h3 class="product-name"><a href="#" onclick="showProductDetails(3)">Product 3 - Smartphone</a></h3>
+      <p>$699</p>
+    </div>
+  </section>
 
-  <div id="product-desc" class="page product-desc">
-    <h2>Product Description</h2>
-    <p>The iPhone 13 Pro Max features a 6.7-inch Super Retina XDR display, 5G capability, and the powerful A15 Bionic chip.</p>
-  </div>
+  <!-- Product Details Page -->
+  <section id="product-details" style="display:none;">
+    <h2>Product Details</h2>
+    <div id="product-info">
+      <!-- Product details will be dynamically populated by JavaScript -->
+    </div>
+    <button onclick="addToCart(currentProductId)">Add to Cart</button>
+    <button onclick="buyNow(currentProductId)">Buy Now</button>
+    <button onclick="showSection('home')">Back to Home</button>
+  </section>
 
-  <div id="cart" class="page cart">
+  <!-- Cart Page -->
+  <section id="cart" style="display:none;">
     <h2>Your Cart</h2>
-    <div id="cart-items">
+    <div id="cart-list">
       <p>Your cart is empty.</p>
     </div>
-  </div>
+    <button onclick="proceedToCheckout()">Proceed to Checkout</button>
+  </section>
 
-  <div id="contact" class="page contact">
-    <h2>Contact Us</h2>
-    <p>Email: support@iphonestore.com</p>
-    <p>Phone: +1-800-IPHONES</p>
-  </div>
-
-  <!-- Footer -->
-  <footer>
-    <p>&copy; 2024 iPhone Store</p>
-  </footer>
+  <!-- User Profile Page -->
+  <section id="profile" style="display:none;">
+    <h2>User Profile</h2>
+    <form id="profile-form">
+      <label for="email">Email:</label>
+      <input type="email" id="email" required>
+      <label for="phone">Phone:</label>
+      <input type="tel" id="phone" required>
+      <label for="address">Address:</label>
+      <input type="text" id="address" required>
+      <button type="submit">Update Profile</button>
+    </form>
+    <button onclick="showSection('home')">Back to Home</button>
+  </section>
 
   <script>
-    // Show different pages based on navigation
-    function showPage(pageId) {
-      const pages = document.querySelectorAll('.page');
-      pages.forEach(page => {
-        page.classList.remove('active');
-      });
-      document.getElementById(pageId).classList.add('active');
-
-      const navLinks = document.querySelectorAll('nav ul li a');
-      navLinks.forEach(link => {
-        link.classList.remove('active');
-      });
-      document.querySelector(`nav ul li a[href='#${pageId}']`).classList.add('active');
-    }
-
-    // Cart functionality
+    let currentProductId;
     let cart = [];
 
-    function addToCart(product) {
-      cart.push(product);
-      updateCart();
+    const products = {
+      1: {
+        name: "Smartphone 1",
+        price: 499,
+        longDescription: "An excellent smartphone with a sleek design and powerful performance.",
+        specs: ["Display: 6.1-inch Retina", "Processor: A14 Bionic", "Storage: 128GB"],
+        seller: "TechHub",
+        type: "Smartphones"
+      },
+      2: {
+        name: "Smartphone 2",
+        price: 599,
+        longDescription: "An advanced smartphone with a large screen, fast performance, and top-notch security features.",
+        specs: ["Display: 6.5-inch AMOLED", "Processor: Snapdragon 888", "Storage: 256GB"],
+        seller: "GizmoWorld",
+        type: "Smartphones"
+      },
+      3: {
+        name: "Smartphone 3",
+        price: 699,
+        longDescription: "A premium smartphone with the best camera technology and a smooth, high refresh-rate display.",
+        specs: ["Display: 6.7-inch Super Retina XDR", "Processor: A15 Bionic", "Storage: 512GB"],
+        seller: "TechSavvy",
+        type: "Smartphones"
+      }
+    };
+
+    // Function to show/hide sections
+    function showSection(sectionId, linkElement) {
+      document.querySelectorAll('section').forEach(section => {
+        section.style.display = 'none';
+      });
+      document.getElementById(sectionId).style.display = 'block';
+
+      // Remove active class from all links
+      document.querySelectorAll('.nav-link').forEach(link => {
+        link.classList.remove('active');
+      });
+
+      // Add active class to the clicked link
+      if (linkElement) linkElement.classList.add('active');
     }
 
-    function updateCart() {
-      const cartItems = document.getElementById('cart-items');
+    // Function to show product details
+    function showProductDetails(productId) {
+      currentProductId = productId;
+      const product = products[productId];
+      const productInfo = `
+        <h3>${product.name}</h3>
+        <div class="product-img">
+          <div class="product-screen"></div>
+        </div>
+        <p>Price: $${product.price}</p>
+        <p>${product.longDescription}</p>
+        <div class="product-specs">
+          <h4>Specifications:</h4>
+          <ul>
+            ${product.specs.map(spec => `<li>${spec}</li>`).join('')}
+          </ul>
+        </div>
+        <p>Seller: ${product.seller}</p>
+        <p>Type: ${product.type}</p>
+      `;
+      document.getElementById('product-info').innerHTML = productInfo;
+      showSection('product-details');
+    }
+
+    // Add to cart functionality
+    function addToCart(productId) {
+      cart.push(productId);
+      alert('Product added to cart.');
+      updateCartDisplay();
+    }
+
+    // Buy now functionality
+    function buyNow(productId) {
+      cart.push(productId);
+      showSection('checkout');
+    }
+
+    // Update cart display
+    function updateCartDisplay() {
+      const cartList = document.getElementById('cart-list');
       if (cart.length === 0) {
-        cartItems.innerHTML = '<p>Your cart is empty.</p>';
+        cartList.innerHTML = '<p>Your cart is empty.</p>';
       } else {
-        cartItems.innerHTML = cart.map(item => `
-          <div class="cart-item">
-            <span>${item}</span>
-            <button onclick="removeFromCart('${item}')">Remove</button>
-          </div>
-        `).join('');
+        const cartItems = cart.map(id => `<p>${products[id].name} - $${products[id].price}</p>`).join('');
+        cartList.innerHTML = cartItems;
       }
     }
 
-    function removeFromCart(product) {
-      cart = cart.filter(item => item !== product);
-      updateCart();
+    // Proceed to checkout
+    function proceedToCheckout() {
+      if (cart.length === 0) {
+        alert('Your cart is empty.');
+      } else {
+        showSection('checkout');
+      }
     }
+
+    // Form submission handling (profile)
+    document.getElementById('profile-form').onsubmit = function(e) {
+      e.preventDefault();
+      alert('Profile updated successfully!');
+      showSection('home');
+    };
+
+    // Dark and Light theme toggle
+    function toggleTheme() {
+      document.body.dataset.theme = document.body.dataset.theme === 'dark' ? '' : 'dark';
+    }
+
+    // Initialize the page by showing the home section
+    showSection('home', document.querySelector('.nav-link.active'));
   </script>
 </body>
 </html>
