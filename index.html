@@ -71,10 +71,9 @@
       bottom: -5px;
       height: 2px;
       background-color: white;
-      width: 100%; /* Full width of the link */
+      width: 100%;
     }
 
-    /* Initial state for the underline */
     header a::after {
       content: '';
       position: absolute;
@@ -87,7 +86,6 @@
       transition: width 0.3s ease;
     }
 
-    /* On hover, show the underline */
     header a:hover::after {
       width: 100%;
       background-color: white;
@@ -287,6 +285,22 @@
     <button onclick="proceedToCheckout()">Proceed to Checkout</button>
   </section>
 
+  <!-- Checkout Page -->
+  <section id="checkout" style="display:none;">
+    <h2>Checkout</h2>
+    <form id="checkout-form">
+      <label for="address">Shipping Address:</label>
+      <input type="text" id="address" required>
+      <label for="payment">Payment Method:</label>
+      <select id="payment" required>
+        <option value="credit-card">Credit Card</option>
+        <option value="paypal">PayPal</option>
+      </select>
+      <button type="submit">Complete Purchase</button>
+    </form>
+    <button onclick="showSection('home')">Cancel</button>
+  </section>
+
   <!-- User Profile Page -->
   <section id="profile" style="display:none;">
     <h2>User Profile</h2>
@@ -405,6 +419,15 @@
         showSection('checkout');
       }
     }
+
+    // Form submission handling (checkout)
+    document.getElementById('checkout-form').onsubmit = function(e) {
+      e.preventDefault();
+      alert('Thank you for your purchase!');
+      cart = []; // Clear cart after purchase
+      updateCartDisplay(); // Update cart display
+      showSection('home'); // Return to home after checkout
+    };
 
     // Form submission handling (profile)
     document.getElementById('profile-form').onsubmit = function(e) {
